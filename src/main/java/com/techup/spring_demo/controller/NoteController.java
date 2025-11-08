@@ -1,7 +1,9 @@
 package com.techup.spring_demo.controller;
 
-import com.techup.spring_demo.entity.Note;
+import com.techup.spring_demo.dto.NoteRequest;
+import com.techup.spring_demo.dto.NoteResponse;
 import com.techup.spring_demo.service.NoteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +19,20 @@ public class NoteController {
     private final NoteService noteService;
 
     @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes() {
-        List<Note> notes = noteService.getAll();
+    public ResponseEntity<List<NoteResponse>> getAllNotes() {
+        List<NoteResponse> notes = noteService.getAll();
         return ResponseEntity.ok(notes);
     }
 
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestBody Note note) {
-        Note createdNote = noteService.create(note);
+    public ResponseEntity<NoteResponse> createNote(@Valid @RequestBody NoteRequest request) {
+        NoteResponse createdNote = noteService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note) {
-        Note updatedNote = noteService.update(id, note);
+    public ResponseEntity<NoteResponse> updateNote(@PathVariable Long id, @Valid @RequestBody NoteRequest request) {
+        NoteResponse updatedNote = noteService.update(id, request);
         return ResponseEntity.ok(updatedNote);
     }
 
