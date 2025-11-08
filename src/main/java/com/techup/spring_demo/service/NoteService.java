@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +55,16 @@ public class NoteService {
                 .id(note.getId())
                 .title(note.getTitle())
                 .content(note.getContent())
+                .imageUrl(note.getImageUrl())
                 .build();
     }
+
+    public NoteResponse attachFileUrl(Long id, String url) {
+        Note note = noteRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
+    
+        note.setImageUrl(url);
+        Note saved = noteRepository.save(note);
+        return toResponse(saved);
+      }
 }

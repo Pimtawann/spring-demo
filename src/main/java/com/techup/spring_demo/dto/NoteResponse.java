@@ -9,4 +9,5 @@ public class NoteResponse {
   Long id;
   String title;
   String content;
+  String imageUrl;
 }

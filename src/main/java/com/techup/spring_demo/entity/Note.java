@@ -15,9 +15,12 @@ public class Note {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;    
     
-    @Column(nullable = false)
+  @Column(nullable = false)
   private String title;  
   
   @Column(columnDefinition = "TEXT")
-  private String content; 
+  private String content;
+  
+  @Column(name = "image_url")
+  private String imageUrl;
 }

@@ -20,8 +20,8 @@ public class SecurityConfig {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll() // ✅ เปิดให้ login/register ได้โดยไม่ต้อง token
-            .anyRequest().authenticated()            // ❌ ที่เหลือต้องใช้ token
+            .requestMatchers("/auth/**").permitAll()      // ✅ เปิดให้ login/register ได้โดยไม่ต้อง token 
+            .anyRequest().authenticated()                 // ❌ ที่เหลือต้องใช้ token
         )
         .httpBasic(httpBasic -> httpBasic.disable()) // ปิด basic auth ใช้ JWT แทน
         .sessionManagement(session -> session.sessionCreationPolicy(

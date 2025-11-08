@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.techup.spring_demo.service.SupabaseStorageService;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,7 @@ import java.util.List;
 public class NoteController {
 
     private final NoteService noteService;
+    private final SupabaseStorageService supabaseStorageService;
 
     @GetMapping
     public ResponseEntity<List<NoteResponse>> getAllNotes() {
@@ -29,6 +31,14 @@ public class NoteController {
         NoteResponse createdNote = noteService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
     }
+
+    @PostMapping("/{id}/upload")
+    public ResponseEntity<NoteResponse> uploadForNote(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        String url = supabaseStorageService.uploadFile(file);
+        NoteResponse updated = noteService.attachFileUrl(id, url);
+        return ResponseEntity.ok(updated);
+  }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<NoteResponse> updateNote(@PathVariable Long id, @Valid @RequestBody NoteRequest request) {
